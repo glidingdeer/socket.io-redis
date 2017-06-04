@@ -305,14 +305,16 @@ function adapter(uri, opts) {
       return;
     }
 
-    if (!response.requestid || !self.requests[response.requestid]) {
+    var requestid = response.requestid;
+
+    if (!requestid || !self.requests[requestid]) {
       debug('ignoring unknown request');
       return;
     }
 
     debug('received response %j', response);
 
-    var request = self.requests[response.requestid];
+    var request = self.requests[requestid];
 
     switch (request.type) {
 
@@ -329,14 +331,14 @@ function adapter(uri, opts) {
         if (request.msgCount === request.numsub) {
           clearTimeout(request.timeout);
           if (request.callback) process.nextTick(request.callback.bind(null, null, Object.keys(request.clients)));
-          delete self.requests[request.requestid];
+          delete self.requests[requestid];
         }
         break;
 
       case requestTypes.clientRooms:
         clearTimeout(request.timeout);
         if (request.callback) process.nextTick(request.callback.bind(null, null, response.rooms));
-        delete self.requests[request.requestid];
+        delete self.requests[requestid];
         break;
 
       case requestTypes.allRooms:
@@ -352,7 +354,7 @@ function adapter(uri, opts) {
         if (request.msgCount === request.numsub) {
           clearTimeout(request.timeout);
           if (request.callback) process.nextTick(request.callback.bind(null, null, Object.keys(request.rooms)));
-          delete self.requests[request.requestid];
+          delete self.requests[requestid];
         }
         break;
 
@@ -361,7 +363,7 @@ function adapter(uri, opts) {
       case requestTypes.remoteDisconnect:
         clearTimeout(request.timeout);
         if (request.callback) process.nextTick(request.callback.bind(null, null));
-        delete self.requests[request.requestid];
+        delete self.requests[requestid];
         break;
 
       case requestTypes.customRequest:
@@ -372,7 +374,7 @@ function adapter(uri, opts) {
         if (request.msgCount === request.numsub) {
           clearTimeout(request.timeout);
           if (request.callback) process.nextTick(request.callback.bind(null, null, request.replies));
-          delete self.requests[request.requestid];
+          delete self.requests[requestid];
         }
         break;
 
