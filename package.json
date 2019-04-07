@@ -1,11 +1,11 @@
 {
-  "name": "socket.io-redis",
+  "name": "@glidingdeer/socket.io-redis",
   "version": "4.0.2",
   "description": "",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git@github.com:socketio/socket.io-redis.git"
+    "url": "git+https://github.com/glidingdeer/socket.io-redis.git"
   },
   "files": [
     "index.js"
